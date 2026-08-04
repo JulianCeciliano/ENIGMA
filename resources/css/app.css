@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:FILL,wght@0..1,300..700');
+@import 'tailwindcss';
+
+@source '../views';
+@source '../js';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@theme {
+    --color-background: #141311;
+    --color-surface: #141311;
+    --color-surface-container-lowest: #0f0e0c;
+    --color-surface-container-low: #1c1c19;
+    --color-surface-container: #20201d;
+    --color-surface-container-high: #2b2a28;
+    --color-surface-container-highest: #363532;
+    --color-primary: #cac5c5;
+    --color-primary-container: #252323;
+    --color-secondary: #bec7dc;
+    --color-secondary-container: #434c5d;
+    --color-tertiary: #cec6b0;
+    --color-error: #ffb4ab;
+    --color-error-container: #93000a;
+    --color-on-surface: #e6e2de;
+    --color-on-surface-variant: #d0c4c4;
+    --color-outline: #998e8f;
+    --color-outline-variant: #4d4545;
+    --font-sans:
+        'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-code: 'JetBrains Mono', ui-monospace, monospace;
+    --font-headline: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+    :root {
+        font-family: var(--font-body);
+        color: var(--color-on-surface);
+        background: var(--color-background);
+    }
+
+    body {
+        min-width: 320px;
+        min-height: 100vh;
+        background: var(--color-background);
+    }
+
+    ::selection {
+        color: var(--color-primary-container);
+        background: var(--color-tertiary);
+    }
+}
+
+.material-symbols-outlined {
+    font-size: 20px;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+.grid-blueprint {
+    background-image:
+        linear-gradient(to right, rgb(112 121 140 / 5%) 1px, transparent 1px),
+        linear-gradient(to bottom, rgb(112 121 140 / 5%) 1px, transparent 1px);
+    background-size: 32px 32px;
+}
+
+.technical-border {
+    border: 1px solid rgb(112 121 140 / 30%);
+}
