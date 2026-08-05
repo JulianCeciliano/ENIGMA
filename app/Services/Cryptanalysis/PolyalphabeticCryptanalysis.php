@@ -6,9 +6,7 @@ use App\Services\Ciphers\CipherSupport;
 
 final class PolyalphabeticCryptanalysis
 {
-    public function __construct(private readonly LanguageAnalyzer $analyzer = new LanguageAnalyzer())
-    {
-    }
+    public function __construct(private readonly LanguageAnalyzer $analyzer = new LanguageAnalyzer) {}
 
     /**
      * @return array{key: string, plainText: string, score: float, idioma: string}
@@ -93,11 +91,12 @@ final class PolyalphabeticCryptanalysis
         $position = 0;
         $keyLength = strlen($key);
 
-        foreach (str_split($text) as $character) {
+        foreach (CipherSupport::textCharacters($text) as $character) {
             $index = CipherSupport::letterIndex($character);
 
             if ($index === null) {
                 $output .= $character;
+
                 continue;
             }
 

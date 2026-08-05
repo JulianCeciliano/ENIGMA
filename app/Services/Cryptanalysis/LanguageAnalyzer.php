@@ -6,6 +6,11 @@ use Normalizer;
 
 final class LanguageAnalyzer
 {
+    /**
+     * @var array<string, array{frequencies: array<int, float>, bigrams: array<string, float>, trigrams: array<string, float>, words: array<string, bool>}>
+     */
+    private array $profiles = [];
+
     private const ENGLISH_LETTERS = [
         0.08167, 0.01492, 0.02782, 0.04253, 0.12702, 0.02228, 0.02015,
         0.06094, 0.06966, 0.00153, 0.00772, 0.04025, 0.02406, 0.06749,
@@ -53,7 +58,8 @@ final class LanguageAnalyzer
             return -1_000_000.0;
         }
 
-        $frequencies = $this->frequencies($language);
+        $profile = $this->profile($language);
+        $frequencies = $profile['frequencies'];
         $counts = array_fill(0, 26, 0);
         $length = strlen($letters);
 
@@ -73,11 +79,11 @@ final class LanguageAnalyzer
         $letterLogLikelihood /= $length;
         $chiSquared /= $length;
 
-        $bigrams = $this->ngramScore($letters, 2, $this->ngrams($language, 2));
-        $trigrams = $this->ngramScore($letters, 3, $this->ngrams($language, 3));
+        $bigrams = $this->ngramScore($letters, 2, $profile['bigrams']);
+        $trigrams = $this->ngramScore($letters, 3, $profile['trigrams']);
         $words = preg_split('/\s+/u', trim($text), -1, PREG_SPLIT_NO_EMPTY) ?: [];
         $knownWords = 0;
-        $known = array_fill_keys($this->words($language), true);
+        $known = $profile['words'];
 
         foreach ($words as $word) {
             $normalized = $this->lettersOnly($word);
@@ -114,6 +120,23 @@ final class LanguageAnalyzer
     }
 
     /**
+     * @return array{frequencies: array<int, float>, bigrams: array<string, float>, trigrams: array<string, float>, words: array<string, bool>}
+     */
+    private function profile(string $language): array
+    {
+        if (isset($this->profiles[$language])) {
+            return $this->profiles[$language];
+        }
+
+        return $this->profiles[$language] = [
+            'frequencies' => $this->frequencies($language),
+            'bigrams' => $this->compileNgrams($language, 2),
+            'trigrams' => $this->compileNgrams($language, 3),
+            'words' => array_fill_keys($this->words($language), true),
+        ];
+    }
+
+    /**
      * @return array<int, string>
      */
     private function ngrams(string $language, int $length): array
@@ -129,16 +152,11 @@ final class LanguageAnalyzer
     }
 
     /**
-     * @param array<int, string> $ngrams
+     * @return array<string, float>
      */
-    private function ngramScore(string $letters, int $length, array $ngrams): float
+    private function compileNgrams(string $language, int $length): array
     {
-        $total = strlen($letters) - $length + 1;
-
-        if ($total <= 0) {
-            return 0.0;
-        }
-
+        $ngrams = $this->ngrams($language, $length);
         $weights = [];
         $weightTotal = 0.0;
 
@@ -148,12 +166,30 @@ final class LanguageAnalyzer
             $weightTotal += $weight;
         }
 
+        foreach ($weights as $ngram => $weight) {
+            $weights[$ngram] = $weight / $weightTotal;
+        }
+
+        return $weights;
+    }
+
+    /**
+     * @param  array<string, float>  $ngrams
+     */
+    private function ngramScore(string $letters, int $length, array $ngrams): float
+    {
+        $total = strlen($letters) - $length + 1;
+
+        if ($total <= 0) {
+            return 0.0;
+        }
+
         $score = 0.0;
 
         for ($index = 0; $index < $total; $index++) {
             $ngram = substr($letters, $index, $length);
-            $probability = isset($weights[$ngram])
-                ? $weights[$ngram] / $weightTotal
+            $probability = isset($ngrams[$ngram])
+                ? $ngrams[$ngram]
                 : 0.00015;
             $score += log($probability);
         }

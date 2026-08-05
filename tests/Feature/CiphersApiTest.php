@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\CipherOperation;
 use App\Models\User;
+use App\Services\CipherService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Passport\Passport;
 
@@ -62,7 +64,11 @@ it('supports the spanish transform alias and returns api validation errors', fun
 
 it('accepts transformations from the authenticated web session used by the frontend', function (): void {
     $user = User::factory()->create();
-    $this->actingAs($user, 'web');
+
+    $this->post('/login', [
+        'email' => $user->email,
+        'password' => 'password',
+    ])->assertRedirect();
 
     $this->postJson('/api/ciphers/transform', [
         'algorithm' => 'caesar',
@@ -72,11 +78,41 @@ it('accepts transformations from the authenticated web session used by the front
     ])->assertSuccessful()->assertJsonPath('result', 'KHOOR');
 });
 
+it('serves the authenticated user and history through a web session', function (): void {
+    $user = User::factory()->create();
+    CipherOperation::factory()->for($user)->create(['algorithm' => 'caesar']);
+
+    $this->actingAs($user, 'web');
+
+    $this->getJson('/api/user')
+        ->assertSuccessful()
+        ->assertJsonPath('id', $user->id);
+
+    $this->getJson('/api/history')
+        ->assertSuccessful()
+        ->assertJsonPath('data.0.algorithm', 'caesar');
+});
+
+it('rejects oversized cipher parameters during request validation', function (): void {
+    $user = User::factory()->create();
+    Passport::actingAs($user, ['*']);
+
+    $this->postJson('/api/ciphers/transform', [
+        'algorithm' => 'columnar',
+        'operation' => 'encrypt',
+        'text' => 'HELLO',
+        'parameters' => ['key' => str_repeat('A', 81)],
+    ])->assertStatus(400)
+        ->assertJsonFragment([
+            'parameters.key' => ['La clave no puede superar los 80 caracteres.'],
+        ]);
+});
+
 it('breaks a deterministic cipher through the api', function (): void {
     $user = User::factory()->create();
     Passport::actingAs($user, ['*']);
     $plainText = str_repeat('THE CRYPTOGRAPHY CLASS EXPLAINS WHY HISTORICAL CIPHERS ARE WEAK. ', 3);
-    $cipherText = (new \App\Services\CipherService())->transform('atbash', 'encrypt', $plainText, [], false)['result'];
+    $cipherText = (new CipherService)->transform('atbash', 'encrypt', $plainText, [], false)['result'];
 
     $this->postJson('/api/ciphers/atbash/break', ['text' => $cipherText])
         ->assertSuccessful()

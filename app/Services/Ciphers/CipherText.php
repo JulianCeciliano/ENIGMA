@@ -8,11 +8,11 @@ use Closure;
 
 final class CipherText
 {
-    public const string Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    public const Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-    public const int MaximumStepRows = 160;
+    public const MaximumStepRows = 160;
 
-    public const int MaximumMatrixColumns = 80;
+    public const MaximumMatrixColumns = 80;
 
     public static function mod(int $value, int $modulus = 26): int
     {

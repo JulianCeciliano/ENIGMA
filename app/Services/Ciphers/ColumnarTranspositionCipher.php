@@ -10,7 +10,7 @@ final class ColumnarTranspositionCipher implements ClassicCipher
     {
         $characters = CipherSupport::textCharacters($cipherText);
         $maximumColumns = min(8, max(2, count($characters)));
-        $analyzer = new LanguageAnalyzer();
+        $analyzer = new LanguageAnalyzer;
         $best = null;
 
         for ($columns = 2; $columns <= $maximumColumns; $columns++) {
@@ -37,7 +37,7 @@ final class ColumnarTranspositionCipher implements ClassicCipher
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param  array<string, mixed>  $parameters
      * @return array<string, mixed>
      */
     public function decrypt(string $text, array $parameters, bool $includeSteps = true): array
@@ -48,7 +48,7 @@ final class ColumnarTranspositionCipher implements ClassicCipher
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param  array<string, mixed>  $parameters
      * @return array<string, mixed>
      */
     public function encrypt(string $text, array $parameters, bool $includeSteps = true): array
@@ -91,8 +91,8 @@ final class ColumnarTranspositionCipher implements ClassicCipher
     }
 
     /**
-     * @param array<int, string> $characters
-     * @param array<int, int> $order
+     * @param  array<int, string>  $characters
+     * @param  array<int, int>  $order
      */
     private function decryptWithOrder(array $characters, int $columns, array $order): string
     {
@@ -142,7 +142,7 @@ final class ColumnarTranspositionCipher implements ClassicCipher
      */
     private function payload(string $result, string $key, bool $encrypting, bool $includeSteps): array
     {
-        $collector = new StepCollector();
+        $collector = new StepCollector;
 
         if ($includeSteps) {
             $order = CipherSupport::columnOrder($key);
@@ -167,26 +167,24 @@ final class ColumnarTranspositionCipher implements ClassicCipher
     }
 
     /**
-     * @param array<int, int> $items
-     * @return array<int, array<int, int>>
+     * @param  array<int, int>  $items
+     * @return iterable<int, array<int, int>>
      */
-    private function permutations(array $items): array
+    private function permutations(array $items): iterable
     {
         if (count($items) <= 1) {
-            return [$items];
-        }
+            yield $items;
 
-        $permutations = [];
+            return;
+        }
 
         foreach ($items as $index => $item) {
             $remaining = $items;
             unset($remaining[$index]);
 
             foreach ($this->permutations(array_values($remaining)) as $permutation) {
-                $permutations[] = [$item, ...$permutation];
+                yield [$item, ...$permutation];
             }
         }
-
-        return $permutations;
     }
 }

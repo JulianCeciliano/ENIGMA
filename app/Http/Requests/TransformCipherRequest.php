@@ -39,7 +39,8 @@ class TransformCipherRequest extends ApiFormRequest
             ],
             'operation' => ['required', Rule::in(['encrypt', 'cifrar', 'decrypt', 'descifrar'])],
             'text' => ['required', 'string', 'min:1', 'max:8000'],
-            'parameters' => ['sometimes', 'array'],
+            'parameters' => ['sometimes', 'array:key,shift,a,b,rails'],
+            'parameters.key' => ['sometimes', 'string', 'max:80'],
             'includeSteps' => ['boolean'],
         ];
     }
@@ -58,6 +59,7 @@ class TransformCipherRequest extends ApiFormRequest
             'text.min' => 'El texto no puede estar vacío.',
             'text.max' => 'El texto no puede superar los 8000 caracteres.',
             'parameters.array' => 'Los parámetros deben ser un objeto.',
+            'parameters.key.max' => 'La clave no puede superar los 80 caracteres.',
         ];
     }
 }

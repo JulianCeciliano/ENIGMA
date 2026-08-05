@@ -10,7 +10,7 @@ test('encrypts the documented transformation vectors', function (
     array $parameters,
     string $expected,
 ): void {
-    $result = (new CipherService())->transform($algorithm, 'encrypt', $text, $parameters, false);
+    $result = (new CipherService)->transform($algorithm, 'encrypt', $text, $parameters, false);
 
     expect($result['result'])->toBe($expected)
         ->and($result['steps'])->toBe([]);
@@ -36,7 +36,7 @@ test('encrypts the documented transformation vectors', function (
 ]);
 
 test('all ten ciphers round trip ASCII, punctuation, and UTF-8 text', function (): void {
-    $service = new CipherService();
+    $service = new CipherService;
     $text = "Ataque al amanecer! 123\nÑandú.";
     $cases = [
         ['atbash', []],
@@ -60,7 +60,7 @@ test('all ten ciphers round trip ASCII, punctuation, and UTF-8 text', function (
 });
 
 test('columnar transposition preserves length and stable duplicate ordering', function (): void {
-    $service = new CipherService();
+    $service = new CipherService;
     $text = 'WE ARE DISCOVERED!';
     $parameters = ['key' => 'BALLOON'];
 
@@ -72,7 +72,7 @@ test('columnar transposition preserves length and stable duplicate ordering', fu
 });
 
 test('catalog contains the ten documented strategies', function (): void {
-    $catalog = (new CipherService())->catalog();
+    $catalog = (new CipherService)->catalog();
     $ids = array_column($catalog, 'id');
 
     expect($catalog)->toHaveCount(10)
@@ -82,7 +82,7 @@ test('catalog contains the ten documented strategies', function (): void {
 });
 
 test('steps honor the educational limits and alphabet mappings', function (): void {
-    $service = new CipherService();
+    $service = new CipherService;
     $text = str_repeat('A ', 200);
 
     $flow = $service->transform('vigenere', 'encrypt', $text, ['key' => 'LEMON'], true);
@@ -92,8 +92,33 @@ test('steps honor the educational limits and alphabet mappings', function (): vo
         ->and($mapping['steps'][0]['rows'])->toHaveCount(26);
 });
 
+test('vigenere steps use the same key position as the result', function (): void {
+    $result = (new CipherService)->transform(
+        'vigenere',
+        'encrypt',
+        'ATTACK',
+        ['key' => 'LEMON'],
+        true,
+    );
+
+    expect(array_column($result['steps'][0]['rows'], 3))
+        ->toBe(['L', 'X', 'F', 'O', 'P', 'V']);
+});
+
+test('rail fence steps count UTF-8 characters instead of bytes', function (): void {
+    $result = (new CipherService)->transform(
+        'rail-fence',
+        'encrypt',
+        'Ñandú',
+        ['rails' => 2],
+        true,
+    );
+
+    expect($result['steps'][0]['rows'])->toHaveCount(5);
+});
+
 test('fixed breaks recover deterministic transformations', function (): void {
-    $service = new CipherService();
+    $service = new CipherService;
     $text = str_repeat(
         'THE CRYPTOGRAPHY CLASS EXPLAINS WHY HISTORICAL CIPHERS ARE WEAK. ',
         3,
@@ -107,7 +132,7 @@ test('fixed breaks recover deterministic transformations', function (): void {
 });
 
 test('polyalphabetic breaks recover keys from long educational samples', function (): void {
-    $service = new CipherService();
+    $service = new CipherService;
     $text = str_repeat(
         'THE CRYPTOGRAPHY CLASS EXPLAINS WHY HISTORICAL CIPHERS ARE WEAK. THE MESSAGE HIDES REPEATED LETTERS. ',
         3,

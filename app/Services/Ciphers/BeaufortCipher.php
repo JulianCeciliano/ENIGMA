@@ -8,7 +8,7 @@ final class BeaufortCipher implements ClassicCipher
 {
     public function breakCipher(string $cipherText): array
     {
-        $result = (new PolyalphabeticCryptanalysis())->break($cipherText, true);
+        $result = (new PolyalphabeticCryptanalysis)->break($cipherText, true);
 
         return [
             'plainText' => $result['plainText'],
@@ -19,7 +19,7 @@ final class BeaufortCipher implements ClassicCipher
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param  array<string, mixed>  $parameters
      * @return array<string, mixed>
      */
     public function decrypt(string $text, array $parameters, bool $includeSteps = true): array
@@ -30,7 +30,7 @@ final class BeaufortCipher implements ClassicCipher
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param  array<string, mixed>  $parameters
      * @return array<string, mixed>
      */
     public function encrypt(string $text, array $parameters, bool $includeSteps = true): array
@@ -72,7 +72,7 @@ final class BeaufortCipher implements ClassicCipher
      */
     private function payload(string $result, string $key, bool $includeSteps): array
     {
-        $collector = new StepCollector();
+        $collector = new StepCollector;
 
         if ($includeSteps) {
             $collector->add(
@@ -97,11 +97,12 @@ final class BeaufortCipher implements ClassicCipher
         $position = 0;
         $keyLength = strlen($key);
 
-        foreach (str_split($text) as $character) {
+        foreach (CipherSupport::textCharacters($text) as $character) {
             $index = CipherSupport::letterIndex($character);
 
             if ($index === null) {
                 $output .= $character;
+
                 continue;
             }
 

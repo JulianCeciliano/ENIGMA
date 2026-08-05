@@ -9,6 +9,6 @@ final class SessionController
 {
     public function user(Request $request): JsonResponse
     {
-        return response()->json($request->user('api'));
+        return response()->json($request->user());
     }
 }

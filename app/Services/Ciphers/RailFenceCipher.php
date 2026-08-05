@@ -3,13 +3,12 @@
 namespace App\Services\Ciphers;
 
 use App\Services\Cryptanalysis\LanguageAnalyzer;
-use InvalidArgumentException;
 
 final class RailFenceCipher implements ClassicCipher
 {
     public function breakCipher(string $cipherText): array
     {
-        $analyzer = new LanguageAnalyzer();
+        $analyzer = new LanguageAnalyzer;
         $characters = CipherSupport::textCharacters($cipherText);
         $maximumRails = min(20, max(2, count($characters)));
         $best = null;
@@ -31,7 +30,7 @@ final class RailFenceCipher implements ClassicCipher
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param  array<string, mixed>  $parameters
      * @return array<string, mixed>
      */
     public function decrypt(string $text, array $parameters, bool $includeSteps = true): array
@@ -42,7 +41,7 @@ final class RailFenceCipher implements ClassicCipher
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param  array<string, mixed>  $parameters
      * @return array<string, mixed>
      */
     public function encrypt(string $text, array $parameters, bool $includeSteps = true): array
@@ -119,17 +118,20 @@ final class RailFenceCipher implements ClassicCipher
      */
     private function payload(string $result, int $rails, bool $encrypting, bool $includeSteps): array
     {
-        $collector = new StepCollector();
+        $collector = new StepCollector;
 
         if ($includeSteps) {
+            $length = min(count(CipherSupport::textCharacters($result)), 160);
+            $pattern = $this->pattern($length, $rails);
+
             $collector->add(
                 'Patrón Rail Fence',
                 $encrypting ? 'Los caracteres se distribuyen siguiendo un patrón zigzag.' : 'Se reconstruyen los rieles y se recorre el zigzag original.',
                 ['Posición', 'Riel'],
                 array_map(
                     static fn (int $position, int $rail): array => [(string) ($position + 1), (string) $rail],
-                    array_keys($this->pattern(min(strlen($result), 160), $rails)),
-                    $this->pattern(min(strlen($result), 160), $rails),
+                    array_keys($pattern),
+                    $pattern,
                 ),
             );
         }
@@ -175,7 +177,7 @@ final class RailFenceCipher implements ClassicCipher
         $rails = CipherSupport::integerParameter($value, 'rails');
 
         if ($rails < 2 || $rails > 100) {
-            throw new InvalidArgumentException('El número de rieles debe estar entre 2 y 100.');
+            throw new CipherValidationException('El número de rieles debe estar entre 2 y 100.', 'rails');
         }
 
         return $rails;

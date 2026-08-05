@@ -3,11 +3,21 @@
 use App\Http\Api\CiphersController;
 use App\Http\Api\HistoryController;
 use App\Http\Api\SessionController;
+use App\Http\Middleware\RequireSessionCsrfToken;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/ciphers', [CiphersController::class, 'index'])->name('api.ciphers.index');
 
-Route::middleware(['auth:web,api'])->group(function (): void {
+Route::middleware([
+    EncryptCookies::class,
+    AddQueuedCookiesToResponse::class,
+    StartSession::class,
+    'auth:web,api',
+    RequireSessionCsrfToken::class,
+])->group(function (): void {
     Route::get('/user', [SessionController::class, 'user'])->name('api.user');
 
     Route::middleware(['throttle:cipher-transform'])->group(function (): void {

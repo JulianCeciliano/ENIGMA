@@ -2,14 +2,13 @@
 
 namespace App\Services\Ciphers;
 
-use App\Services\Cryptanalysis\LanguageAnalyzer;
 use App\Services\Cryptanalysis\PolyalphabeticCryptanalysis;
 
 final class VigenereCipher implements ClassicCipher
 {
     public function breakCipher(string $cipherText): array
     {
-        $result = (new PolyalphabeticCryptanalysis())->break($cipherText);
+        $result = (new PolyalphabeticCryptanalysis)->break($cipherText);
 
         return [
             'plainText' => $result['plainText'],
@@ -20,7 +19,7 @@ final class VigenereCipher implements ClassicCipher
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param  array<string, mixed>  $parameters
      * @return array<string, mixed>
      */
     public function decrypt(string $text, array $parameters, bool $includeSteps = true): array
@@ -31,7 +30,7 @@ final class VigenereCipher implements ClassicCipher
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param  array<string, mixed>  $parameters
      * @return array<string, mixed>
      */
     public function encrypt(string $text, array $parameters, bool $includeSteps = true): array
@@ -73,7 +72,7 @@ final class VigenereCipher implements ClassicCipher
      */
     private function payload(string $input, string $result, string $key, bool $encrypting, bool $includeSteps): array
     {
-        $collector = new StepCollector();
+        $collector = new StepCollector;
 
         if ($includeSteps) {
             $collector->add(
@@ -100,13 +99,14 @@ final class VigenereCipher implements ClassicCipher
         $rows = [];
         $position = 0;
 
-        foreach (str_split($text) as $index => $character) {
+        foreach (CipherSupport::textCharacters($text) as $index => $character) {
             if (count($rows) >= 160) {
                 break;
             }
 
             if (CipherSupport::letterIndex($character) === null) {
                 $rows[] = [(string) ($index + 1), $character, '-', $character];
+
                 continue;
             }
 
@@ -115,7 +115,7 @@ final class VigenereCipher implements ClassicCipher
                 (string) ($index + 1),
                 $character,
                 $keyCharacter,
-                $this->transform($character, $key, $encrypting),
+                $this->transformCharacterAtPosition($character, $key, $position, $encrypting),
             ];
             $position++;
         }
@@ -129,11 +129,12 @@ final class VigenereCipher implements ClassicCipher
         $position = 0;
         $keyLength = strlen($key);
 
-        foreach (str_split($text) as $character) {
+        foreach (CipherSupport::textCharacters($text) as $character) {
             $index = CipherSupport::letterIndex($character);
 
             if ($index === null) {
                 $output .= $character;
+
                 continue;
             }
 
@@ -146,5 +147,20 @@ final class VigenereCipher implements ClassicCipher
         }
 
         return $output;
+    }
+
+    private function transformCharacterAtPosition(
+        string $character,
+        string $key,
+        int $position,
+        bool $encrypting,
+    ): string {
+        $index = CipherSupport::letterIndex($character);
+        $keyIndex = ord($key[$position % strlen($key)]) - ord('A');
+
+        return CipherSupport::characterFromIndex(
+            $encrypting ? $index + $keyIndex : $index - $keyIndex,
+            $character,
+        );
     }
 }

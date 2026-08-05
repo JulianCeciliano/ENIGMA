@@ -8,7 +8,7 @@ final class AutokeyCipher implements ClassicCipher
 {
     public function breakCipher(string $cipherText): array
     {
-        $letters = (new LanguageAnalyzer())->lettersOnly($cipherText);
+        $letters = (new LanguageAnalyzer)->lettersOnly($cipherText);
 
         if ($letters === '') {
             return [
@@ -19,7 +19,7 @@ final class AutokeyCipher implements ClassicCipher
             ];
         }
 
-        $analyzer = new LanguageAnalyzer();
+        $analyzer = new LanguageAnalyzer;
         $best = null;
         $maximumSeedLength = min(12, strlen($letters));
 
@@ -76,7 +76,7 @@ final class AutokeyCipher implements ClassicCipher
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param  array<string, mixed>  $parameters
      * @return array<string, mixed>
      */
     public function decrypt(string $text, array $parameters, bool $includeSteps = true): array
@@ -87,7 +87,7 @@ final class AutokeyCipher implements ClassicCipher
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param  array<string, mixed>  $parameters
      * @return array<string, mixed>
      */
     public function encrypt(string $text, array $parameters, bool $includeSteps = true): array
@@ -143,7 +143,7 @@ final class AutokeyCipher implements ClassicCipher
      */
     private function payload(string $result, string $key, bool $encrypting, bool $includeSteps): array
     {
-        $collector = new StepCollector();
+        $collector = new StepCollector;
 
         if ($includeSteps) {
             $collector->add(
@@ -169,11 +169,12 @@ final class AutokeyCipher implements ClassicCipher
         $position = 0;
         $seedLength = strlen($seed);
 
-        foreach (str_split($text) as $character) {
+        foreach (CipherSupport::textCharacters($text) as $character) {
             $index = CipherSupport::letterIndex($character);
 
             if ($index === null) {
                 $output .= $character;
+
                 continue;
             }
 

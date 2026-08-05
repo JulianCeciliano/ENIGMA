@@ -12,7 +12,7 @@ final class HistoryController
     public function clear(Request $request, CipherOperationService $operationService): JsonResponse
     {
         /** @var User $user */
-        $user = $request->user('api');
+        $user = $request->user();
         $operationService->clearForUser($user);
 
         return response()->json(['message' => 'Historial eliminado correctamente.']);
@@ -21,7 +21,7 @@ final class HistoryController
     public function index(Request $request, CipherOperationService $operationService): JsonResponse
     {
         /** @var User $user */
-        $user = $request->user('api');
+        $user = $request->user();
         $operations = $operationService->paginateForUser($user, [
             'operation' => $request->string('operation')->toString() ?: null,
             'algorithm' => $request->string('algorithm')->toString() ?: null,

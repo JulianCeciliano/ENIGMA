@@ -3,13 +3,12 @@
 namespace App\Services\Ciphers;
 
 use App\Services\Cryptanalysis\LanguageAnalyzer;
-use InvalidArgumentException;
 
 final class AffineCipher implements ClassicCipher
 {
     public function breakCipher(string $cipherText): array
     {
-        $analyzer = new LanguageAnalyzer();
+        $analyzer = new LanguageAnalyzer;
         $best = null;
 
         for ($a = 0; $a < 26; $a++) {
@@ -40,7 +39,7 @@ final class AffineCipher implements ClassicCipher
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param  array<string, mixed>  $parameters
      * @return array<string, mixed>
      */
     public function decrypt(string $text, array $parameters, bool $includeSteps = true): array
@@ -49,14 +48,14 @@ final class AffineCipher implements ClassicCipher
         $b = CipherSupport::integerParameter($parameters['b'] ?? null, 'b');
 
         if ($this->gcd(CipherSupport::mod($a), 26) !== 1) {
-            throw new InvalidArgumentException('El multiplicador a debe ser coprimo con 26.');
+            throw new CipherValidationException('El multiplicador a debe ser coprimo con 26.', 'a');
         }
 
         return $this->payload($this->transform($text, $a, $b, false), $a, $b, false, $includeSteps);
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param  array<string, mixed>  $parameters
      * @return array<string, mixed>
      */
     public function encrypt(string $text, array $parameters, bool $includeSteps = true): array
@@ -65,7 +64,7 @@ final class AffineCipher implements ClassicCipher
         $b = CipherSupport::integerParameter($parameters['b'] ?? null, 'b');
 
         if ($this->gcd(CipherSupport::mod($a), 26) !== 1) {
-            throw new InvalidArgumentException('El multiplicador a debe ser coprimo con 26.');
+            throw new CipherValidationException('El multiplicador a debe ser coprimo con 26.', 'a');
         }
 
         return $this->payload($this->transform($text, $a, $b, true), $a, $b, true, $includeSteps);
@@ -117,7 +116,7 @@ final class AffineCipher implements ClassicCipher
      */
     private function payload(string $result, int $a, int $b, bool $encrypting, bool $includeSteps): array
     {
-        $collector = new StepCollector();
+        $collector = new StepCollector;
 
         if ($includeSteps) {
             $collector->add(

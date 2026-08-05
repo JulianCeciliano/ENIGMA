@@ -14,7 +14,7 @@ use InvalidArgumentException;
  */
 final class DeterministicRandom
 {
-    private const int Mask = 0xFFFFFFFF;
+    private const Mask = 0xFFFFFFFF;
 
     private int $state;
 

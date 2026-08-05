@@ -2,19 +2,11 @@
 
 namespace App\Services\Ciphers;
 
-use InvalidArgumentException;
-
 final class CipherSupport
 {
     public static function characterFromIndex(int $index, string $original): string
     {
-        $letter = chr(ord('A') + self::mod($index));
-
-        if (strlen($original) === 1 && $original >= 'a' && $original <= 'z') {
-            return strtolower($letter);
-        }
-
-        return $letter;
+        return CipherText::fromIndex($index, $original);
     }
 
     /**
@@ -43,43 +35,36 @@ final class CipherSupport
             return (int) trim($value);
         }
 
-        throw new InvalidArgumentException("El parámetro {$name} debe ser un entero.");
+        throw new CipherValidationException("El parámetro {$name} debe ser un entero.", $name);
     }
 
     public static function letterIndex(string $character): ?int
     {
-        if (strlen($character) !== 1) {
-            return null;
-        }
-
-        $code = ord($character);
-
-        if ($code >= ord('A') && $code <= ord('Z')) {
-            return $code - ord('A');
-        }
-
-        if ($code >= ord('a') && $code <= ord('z')) {
-            return $code - ord('a');
-        }
-
-        return null;
+        return CipherText::letterIndex($character);
     }
 
     public static function mod(int $value, int $modulus = 26): int
     {
-        return (($value % $modulus) + $modulus) % $modulus;
+        return CipherText::mod($value, $modulus);
     }
 
     public static function normalizeColumnKey(mixed $value): string
     {
         if (! is_string($value)) {
-            throw new InvalidArgumentException('La clave columnar debe ser texto.');
+            throw new CipherValidationException('La clave columnar debe ser texto.', 'key');
         }
 
         $key = strtoupper(trim($value));
 
         if (strlen($key) < 2 || preg_match('/^[A-Z0-9]+$/', $key) !== 1) {
-            throw new InvalidArgumentException('La clave columnar debe tener al menos 2 caracteres A-Z o 0-9.');
+            throw new CipherValidationException('La clave columnar debe tener al menos 2 caracteres A-Z o 0-9.', 'key');
+        }
+
+        if (strlen($key) > CipherText::MaximumMatrixColumns) {
+            throw new CipherValidationException(
+                'La clave columnar no puede superar '.CipherText::MaximumMatrixColumns.' caracteres.',
+                'key',
+            );
         }
 
         return $key;
@@ -88,13 +73,13 @@ final class CipherSupport
     public static function normalizeLettersKey(mixed $value, string $name = 'key'): string
     {
         if (! is_string($value)) {
-            throw new InvalidArgumentException("La clave {$name} debe ser texto.");
+            throw new CipherValidationException("La clave {$name} debe ser texto.", $name);
         }
 
         $key = strtoupper(trim($value));
 
         if ($key === '' || preg_match('/^[A-Z]+$/', $key) !== 1) {
-            throw new InvalidArgumentException("La clave {$name} debe contener una o más letras A-Z.");
+            throw new CipherValidationException("La clave {$name} debe contener una o más letras A-Z.", $name);
         }
 
         return $key;
@@ -103,13 +88,13 @@ final class CipherSupport
     public static function normalizeSubstitutionKey(mixed $value): string
     {
         if (! is_string($value)) {
-            throw new InvalidArgumentException('La clave de sustitución debe ser texto.');
+            throw new CipherValidationException('La clave de sustitución debe ser texto.', 'key');
         }
 
         $key = strtoupper(trim($value));
 
         if (strlen($key) !== 26 || preg_match('/^[A-Z]{26}$/', $key) !== 1 || count(array_unique(str_split($key))) !== 26) {
-            throw new InvalidArgumentException('La clave de sustitución debe contener las 26 letras A-Z sin repetir.');
+            throw new CipherValidationException('La clave de sustitución debe contener las 26 letras A-Z sin repetir.', 'key');
         }
 
         return $key;
@@ -124,23 +109,22 @@ final class CipherSupport
             return [];
         }
 
-        $characters = preg_split('//u', $text, -1, PREG_SPLIT_NO_EMPTY);
-
-        return $characters === false ? str_split($text) : $characters;
+        return CipherText::characters($text);
     }
 
     /**
-     * @param callable(int): int $transform
+     * @param  callable(int): int  $transform
      */
     public static function transformLetters(string $text, callable $transform): string
     {
         $output = '';
 
-        foreach (str_split($text) as $character) {
+        foreach (self::textCharacters($text) as $character) {
             $index = self::letterIndex($character);
 
             if ($index === null) {
                 $output .= $character;
+
                 continue;
             }
 
@@ -160,7 +144,7 @@ final class CipherSupport
             }
         }
 
-        throw new InvalidArgumentException('No existe inverso modular.');
+        throw new CipherValidationException('No existe inverso modular.', 'a');
     }
 
     /**

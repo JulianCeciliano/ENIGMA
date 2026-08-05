@@ -6,6 +6,7 @@ use App\Http\Requests\BreakCipherRequest;
 use App\Http\Requests\TransformCipherRequest;
 use App\Models\User;
 use App\Services\CipherOperationService;
+use App\Services\Ciphers\CipherValidationException;
 use App\Services\CipherService;
 use Illuminate\Http\JsonResponse;
 use InvalidArgumentException;
@@ -23,6 +24,8 @@ final class CiphersController
 
         try {
             $result = $cipherService->breakCipher($algorithm, $data['text']);
+        } catch (CipherValidationException $exception) {
+            return $this->errorResponse($exception->getMessage(), $exception->field);
         } catch (InvalidArgumentException $exception) {
             return $this->errorResponse($exception->getMessage(), 'algorithm');
         }
@@ -61,8 +64,10 @@ final class CiphersController
                 $data['parameters'],
                 $data['includeSteps'],
             );
+        } catch (CipherValidationException $exception) {
+            return $this->errorResponse($exception->getMessage(), $exception->field);
         } catch (InvalidArgumentException $exception) {
-            return $this->errorResponse($exception->getMessage(), $this->errorField($exception->getMessage()));
+            return $this->errorResponse($exception->getMessage(), 'algorithm');
         }
 
         /** @var User $user */
@@ -80,17 +85,6 @@ final class CiphersController
     private function durationMs(int $startedAt): int
     {
         return (int) round((hrtime(true) - $startedAt) / 1_000_000);
-    }
-
-    private function errorField(string $message): string
-    {
-        return match (true) {
-            str_contains($message, 'multiplicador a') => 'a',
-            str_contains($message, 'desplazamiento b') => 'b',
-            str_contains($message, 'riel') => 'rails',
-            str_contains($message, 'clave') => 'key',
-            default => 'parameters',
-        };
     }
 
     private function errorResponse(string $message, string $field): JsonResponse
