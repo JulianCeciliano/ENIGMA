@@ -15,6 +15,36 @@ it('serves the login route with GET to guests', function (): void {
     $this->get('/login')->assertSuccessful();
 });
 
+it('shows the register screen to guests', function (): void {
+    $this->get('/register')->assertSuccessful();
+});
+
+it('registers a new operator and logs them in', function (): void {
+    $response = $this->post('/register', [
+        'name' => 'Ada Lovelace',
+        'email' => 'ada@example.com',
+        'password' => 'password',
+        'password_confirmation' => 'password',
+    ]);
+
+    $response->assertRedirect(route('ciphers.catalog'));
+
+    $this->assertAuthenticated();
+    $this->assertDatabaseHas('users', [
+        'name' => 'Ada Lovelace',
+        'email' => 'ada@example.com',
+    ]);
+});
+
+it('validates the registration form', function (): void {
+    $this->post('/register', [
+        'name' => '',
+        'email' => 'not-an-email',
+        'password' => 'secret',
+        'password_confirmation' => 'mismatch',
+    ])->assertSessionHasErrors(['name', 'email', 'password']);
+});
+
 it('authenticates an operator through the terminal form', function (): void {
     $user = User::factory()->create([
         'email' => 'operator@example.com',

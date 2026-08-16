@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +16,24 @@ final class AuthController extends Controller
     public function create(): Response
     {
         return Inertia::render('auth/terminal-access');
+    }
+
+    public function register(): Response
+    {
+        return Inertia::render('auth/register');
+    }
+
+    public function storeRegistration(RegisterRequest $request): RedirectResponse
+    {
+        $user = User::create(
+            $request->safe()->only(['name', 'email', 'password'])->all(),
+        );
+
+        Auth::guard('web')->login($user);
+
+        $request->session()->regenerate();
+
+        return redirect()->route('ciphers.catalog');
     }
 
     public function destroy(Request $request): RedirectResponse

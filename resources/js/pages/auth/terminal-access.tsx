@@ -1,5 +1,6 @@
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
 import authRoutes from '@/actions/App/Http/Controllers/AuthController';
+import { register } from '@/routes';
 
 export default function TerminalAccess() {
     return (
@@ -105,6 +106,24 @@ export default function TerminalAccess() {
                                             ? 'Authenticating...'
                                             : 'Access Terminal'}
                                     </button>
+
+                                    <div className="flex items-center gap-4 pt-2">
+                                        <span className="h-px flex-1 bg-outline-variant/30" />
+                                        <span className="font-code text-[10px] tracking-widest text-on-surface-variant uppercase">
+                                            New operator
+                                        </span>
+                                        <span className="h-px flex-1 bg-outline-variant/30" />
+                                    </div>
+
+                                    <Link
+                                        className="flex w-full items-center justify-center gap-2 border border-outline px-4 py-3 font-code text-xs font-semibold tracking-widest text-on-surface uppercase transition-colors hover:border-tertiary hover:bg-surface-container-high"
+                                        href={register()}
+                                    >
+                                        <span className="material-symbols-outlined text-base">
+                                            how_to_reg
+                                        </span>
+                                        Request Access
+                                    </Link>
 
                                     <div className="flex items-center gap-4 pt-2">
                                         <span className="h-px flex-1 bg-outline-variant/30" />
