@@ -26,7 +26,7 @@ final class AuthController extends Controller
     public function storeRegistration(RegisterRequest $request): RedirectResponse
     {
         $user = User::create(
-            $request->safe()->only(['name', 'email', 'password'])->all(),
+            $request->safe()->only(['name', 'email', 'password']),
         );
 
         Auth::guard('web')->login($user);

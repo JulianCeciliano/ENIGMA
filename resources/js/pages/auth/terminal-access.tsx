@@ -124,21 +124,6 @@ export default function TerminalAccess() {
                                         </span>
                                         Request Access
                                     </Link>
-
-                                    <div className="flex items-center gap-4 pt-2">
-                                        <span className="h-px flex-1 bg-outline-variant/30" />
-                                        <span className="font-code text-[10px] tracking-widest text-on-surface-variant uppercase">
-                                            Passport SPA auth
-                                        </span>
-                                        <span className="h-px flex-1 bg-outline-variant/30" />
-                                    </div>
-
-                                    <p className="font-code text-[10px] leading-relaxed text-on-surface-variant/70">
-                                        Google SSO is not enabled in this
-                                        laboratory build. The authenticated web
-                                        session issues Passport's encrypted API
-                                        cookie for same-origin requests.
-                                    </p>
                                 </div>
                             )}
                         </Form>
