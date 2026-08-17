@@ -60,7 +60,7 @@ final class RailFenceCipher implements ClassicCipher
     {
         return [
             'id' => $this->id(),
-            'name' => 'Rail Fence',
+            'name' => 'Valla de rieles',
             'description' => 'Escribe el texto en zigzag sobre varios rieles y lee cada riel completo.',
             'formula' => 'rail = 0, 1, ..., rails - 1, ..., 1, 0',
             'parameters' => [[
@@ -125,7 +125,7 @@ final class RailFenceCipher implements ClassicCipher
             $pattern = $this->pattern($length, $rails);
 
             $collector->add(
-                'Patrón Rail Fence',
+                'Patrón de valla',
                 $encrypting ? 'Los caracteres se distribuyen siguiendo un patrón zigzag.' : 'Se reconstruyen los rieles y se recorre el zigzag original.',
                 ['Posición', 'Riel'],
                 array_map(
@@ -139,7 +139,7 @@ final class RailFenceCipher implements ClassicCipher
         return [
             'result' => $result,
             'keyUsed' => 'Rieles: '.$rails,
-            'explanation' => 'Rail Fence mueve todos los caracteres y no añade relleno.',
+            'explanation' => 'La valla mueve todos los caracteres y no añade relleno.',
             'steps' => $collector->all(),
         ];
     }

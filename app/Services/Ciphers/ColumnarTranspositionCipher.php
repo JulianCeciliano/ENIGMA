@@ -32,7 +32,7 @@ final class ColumnarTranspositionCipher implements ClassicCipher
             'plainText' => $cipherText,
             'recoveredKey' => 'columnas=2; orden=1, 2',
             'score' => -1_000_000.0,
-            'idioma' => 'Espanol',
+            'idioma' => 'Español',
         ];
     }
 
@@ -75,7 +75,7 @@ final class ColumnarTranspositionCipher implements ClassicCipher
                 'label' => 'Clave de columnas',
                 'type' => 'text',
                 'required' => true,
-                'defaultValue' => 'ZEBRAS',
+                'defaultValue' => 'CEBRAS',
                 'placeholder' => 'A-Z o dígitos',
                 'helpText' => 'Los empates se resuelven de izquierda a derecha.',
                 'min' => 2,

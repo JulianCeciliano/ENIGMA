@@ -34,7 +34,7 @@ final class AffineCipher implements ClassicCipher
             'plainText' => $cipherText,
             'recoveredKey' => 'a=1, b=0',
             'score' => -1_000_000.0,
-            'idioma' => 'Espanol',
+            'idioma' => 'Español',
         ];
     }
 

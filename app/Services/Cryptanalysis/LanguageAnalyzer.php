@@ -42,12 +42,12 @@ final class LanguageAnalyzer
      */
     public function analyze(string $text): array
     {
-        $spanish = $this->score($text, 'Espanol');
-        $english = $this->score($text, 'Ingles');
+        $spanish = $this->score($text, 'Español');
+        $english = $this->score($text, 'Inglés');
 
         return $spanish >= $english
-            ? ['score' => $spanish, 'idioma' => 'Espanol']
-            : ['score' => $english, 'idioma' => 'Ingles'];
+            ? ['score' => $spanish, 'idioma' => 'Español']
+            : ['score' => $english, 'idioma' => 'Inglés'];
     }
 
     public function score(string $text, string $language): float
@@ -116,7 +116,7 @@ final class LanguageAnalyzer
      */
     private function frequencies(string $language): array
     {
-        return $language === 'Espanol' ? self::SPANISH_LETTERS : self::ENGLISH_LETTERS;
+        return $language === 'Español' ? self::SPANISH_LETTERS : self::ENGLISH_LETTERS;
     }
 
     /**
@@ -142,9 +142,9 @@ final class LanguageAnalyzer
     private function ngrams(string $language, int $length): array
     {
         $source = match ([$language, $length]) {
-            ['Espanol', 2] => self::SPANISH_BIGRAMS,
-            ['Espanol', 3] => self::SPANISH_TRIGRAMS,
-            ['Ingles', 2] => self::ENGLISH_BIGRAMS,
+            ['Español', 2] => self::SPANISH_BIGRAMS,
+            ['Español', 3] => self::SPANISH_TRIGRAMS,
+            ['Inglés', 2] => self::ENGLISH_BIGRAMS,
             default => self::ENGLISH_TRIGRAMS,
         };
 
@@ -202,6 +202,6 @@ final class LanguageAnalyzer
      */
     private function words(string $language): array
     {
-        return explode(' ', $language === 'Espanol' ? self::SPANISH_WORDS : self::ENGLISH_WORDS);
+        return explode(' ', $language === 'Español' ? self::SPANISH_WORDS : self::ENGLISH_WORDS);
     }
 }

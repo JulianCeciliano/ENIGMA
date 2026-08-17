@@ -15,7 +15,7 @@ final class AutokeyCipher implements ClassicCipher
                 'plainText' => $cipherText,
                 'recoveredKey' => '',
                 'score' => -1_000_000.0,
-                'idioma' => 'Espanol',
+                'idioma' => 'Español',
             ];
         }
 
@@ -24,7 +24,7 @@ final class AutokeyCipher implements ClassicCipher
         $maximumSeedLength = min(12, strlen($letters));
 
         for ($length = 1; $length <= $maximumSeedLength; $length++) {
-            foreach (['Espanol', 'Ingles'] as $language) {
+            foreach (['Español', 'Inglés'] as $language) {
                 $seed = $this->initialSeed($letters, $length, $language);
                 $plainText = $this->transform($cipherText, $seed, false);
                 $score = $analyzer->score($plainText, $language);
@@ -106,7 +106,7 @@ final class AutokeyCipher implements ClassicCipher
     {
         return [
             'id' => $this->id(),
-            'name' => 'Autokey (autoclave)',
+            'name' => 'Autoclave',
             'description' => 'Usa una semilla y continúa con el texto plano recuperado.',
             'formula' => 'E(P_i) = (P_i + K_i) mod 26',
             'parameters' => [[
@@ -114,7 +114,7 @@ final class AutokeyCipher implements ClassicCipher
                 'label' => 'Semilla',
                 'type' => 'text',
                 'required' => true,
-                'defaultValue' => 'QUEEN',
+                'defaultValue' => 'REINA',
                 'placeholder' => 'Una palabra de A a Z',
                 'helpText' => 'Después de la semilla se usa el texto plano.',
                 'min' => null,
@@ -126,7 +126,7 @@ final class AutokeyCipher implements ClassicCipher
 
     private function initialSeed(string $letters, int $length, string $language): string
     {
-        $expected = $language === 'Espanol' ? 'EAOSRN' : 'ETAOIN';
+        $expected = $language === 'Español' ? 'EAOSRN' : 'ETAOIN';
         $seed = '';
 
         for ($position = 0; $position < $length; $position++) {
@@ -147,7 +147,7 @@ final class AutokeyCipher implements ClassicCipher
 
         if ($includeSteps) {
             $collector->add(
-                'Flujo Autokey',
+                'Flujo de autoclave',
                 'La semilla se consume primero y después se usa el texto plano.',
                 ['Posición', 'Entrada', 'Clave efectiva', 'Salida'],
                 [['1', 'A', $key[0], $this->transform('A', $key, $encrypting)]],

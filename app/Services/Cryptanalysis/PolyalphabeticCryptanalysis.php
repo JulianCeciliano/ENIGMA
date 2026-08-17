@@ -20,7 +20,7 @@ final class PolyalphabeticCryptanalysis
                 'key' => '',
                 'plainText' => $cipherText,
                 'score' => -1_000_000.0,
-                'idioma' => 'Espanol',
+                'idioma' => 'Español',
             ];
         }
 
@@ -28,7 +28,7 @@ final class PolyalphabeticCryptanalysis
         $best = null;
 
         for ($length = 1; $length <= $maximumLength; $length++) {
-            foreach (['Espanol', 'Ingles'] as $language) {
+            foreach (['Español', 'Inglés'] as $language) {
                 $key = $this->initialKey($letters, $length, $language, $beaufort);
                 $plainText = $this->decrypt($cipherText, $key, $beaufort);
                 $score = $this->analyzer->score($plainText, $language);
@@ -113,7 +113,7 @@ final class PolyalphabeticCryptanalysis
 
     private function initialKey(string $letters, int $length, string $language, bool $beaufort): string
     {
-        $frequencies = $language === 'Espanol'
+        $frequencies = $language === 'Español'
             ? [4, 0, 14, 0, 0, 18, 0, 0, 8, 0, 0, 0, 0, 13, 0, 0, 0, 19, 20, 0, 0, 0, 0, 0, 0, 0]
             : [4, 19, 0, 0, 4, 0, 19, 7, 8, 0, 0, 0, 0, 13, 14, 0, 0, 18, 19, 0, 0, 0, 0, 0, 24, 0];
         $key = '';

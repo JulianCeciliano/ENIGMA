@@ -10,7 +10,7 @@ final class MonoalphabeticSubstitutionCipher implements ClassicCipher
 
     public function breakCipher(string $cipherText): array
     {
-        $analyzer = new LanguageAnalyzer();
+        $analyzer = new LanguageAnalyzer;
         $mapping = $this->frequencyMapping($cipherText, $analyzer);
         $plainText = $this->decodeWithMapping($cipherText, $mapping);
         $analysis = $analyzer->analyze($plainText);
@@ -23,7 +23,7 @@ final class MonoalphabeticSubstitutionCipher implements ClassicCipher
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param  array<string, mixed>  $parameters
      * @return array<string, mixed>
      */
     public function decrypt(string $text, array $parameters, bool $includeSteps = true): array
@@ -41,7 +41,7 @@ final class MonoalphabeticSubstitutionCipher implements ClassicCipher
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param  array<string, mixed>  $parameters
      * @return array<string, mixed>
      */
     public function encrypt(string $text, array $parameters, bool $includeSteps = true): array
@@ -80,7 +80,7 @@ final class MonoalphabeticSubstitutionCipher implements ClassicCipher
     }
 
     /**
-     * @param array<int, int> $mapping
+     * @param  array<int, int>  $mapping
      */
     private function decodeWithMapping(string $text, array $mapping): string
     {
@@ -102,7 +102,7 @@ final class MonoalphabeticSubstitutionCipher implements ClassicCipher
         arsort($counts);
         $cipherOrder = array_keys($counts);
         $language = $analyzer->analyze($text)['idioma'];
-        $frequencies = $language === 'Espanol'
+        $frequencies = $language === 'Español'
             ? [4, 0, 0, 3, 4, 0, 0, 0, 8, 0, 0, 11, 12, 13, 14, 15, 0, 17, 18, 19, 20, 0, 0, 0, 0, 0]
             : [4, 19, 0, 3, 4, 0, 6, 7, 8, 0, 0, 11, 12, 13, 14, 15, 0, 17, 18, 19, 20, 0, 0, 0, 24, 0];
         arsort($frequencies);
@@ -117,7 +117,7 @@ final class MonoalphabeticSubstitutionCipher implements ClassicCipher
     }
 
     /**
-     * @param array<int, int> $mapping
+     * @param  array<int, int>  $mapping
      */
     private function mappingToKey(array $mapping): string
     {
@@ -135,7 +135,7 @@ final class MonoalphabeticSubstitutionCipher implements ClassicCipher
      */
     private function payload(string $result, string $key, bool $encrypting, bool $includeSteps): array
     {
-        $collector = new StepCollector();
+        $collector = new StepCollector;
 
         if ($includeSteps) {
             $collector->add(

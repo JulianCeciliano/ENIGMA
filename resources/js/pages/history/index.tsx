@@ -26,6 +26,19 @@ const statusLabels: Record<string, string> = {
     FAILED: 'FALLIDO',
 };
 
+const algorithmLabels: Record<string, string> = {
+    atbash: 'Atbash',
+    caesar: 'César',
+    rot13: 'ROT13',
+    substitution: 'Sustitución',
+    affine: 'Afín',
+    vigenere: 'Vigenère',
+    beaufort: 'Beaufort',
+    autokey: 'Autoclave',
+    'rail-fence': 'Valla de rieles',
+    columnar: 'Transposición columnar',
+};
+
 export default function History({
     operations: initialOperations,
 }: HistoryProps) {
@@ -222,7 +235,8 @@ export default function History({
                                         operation.operation}
                                 </td>
                                 <td className="px-4 py-4 text-on-surface">
-                                    {operation.algorithm}
+                                    {algorithmLabels[operation.algorithm] ??
+                                        operation.algorithm}
                                 </td>
                                 <td
                                     className={`px-4 py-4 ${operation.status === 'SUCCESS' ? 'text-tertiary' : 'text-error'}`}

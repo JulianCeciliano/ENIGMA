@@ -57,7 +57,7 @@ final class BeaufortCipher implements ClassicCipher
                 'label' => 'Palabra clave',
                 'type' => 'text',
                 'required' => true,
-                'defaultValue' => 'FORT',
+                'defaultValue' => 'FUERTE',
                 'placeholder' => 'Una palabra de A a Z',
                 'helpText' => 'La misma operación cifra y descifra.',
                 'min' => null,

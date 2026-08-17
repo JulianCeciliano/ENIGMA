@@ -57,7 +57,7 @@ final class VigenereCipher implements ClassicCipher
                 'label' => 'Palabra clave',
                 'type' => 'text',
                 'required' => true,
-                'defaultValue' => 'LEMON',
+                'defaultValue' => 'LIMON',
                 'placeholder' => 'Una palabra de A a Z',
                 'helpText' => 'La clave se repite únicamente sobre las letras del texto.',
                 'min' => null,

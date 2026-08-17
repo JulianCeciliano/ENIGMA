@@ -56,7 +56,7 @@ export type BreakResponse = {
     plainText: string;
     recoveredKey: string;
     score: number;
-    idioma: 'Espanol' | 'Ingles';
+    idioma: 'Español' | 'Inglés';
 };
 
 export type HistoryOperation = {
