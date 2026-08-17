@@ -19,25 +19,25 @@ type EnigmaShellProps = {
 const navigation = [
     {
         key: 'catalog' as const,
-        label: 'Catalog',
+        label: 'Catálogo',
         icon: 'grid_view',
         url: ciphersRoutes.catalog.url(),
     },
     {
         key: 'encrypt' as const,
-        label: 'Encrypt',
+        label: 'Cifrar',
         icon: 'enhanced_encryption',
         url: ciphersRoutes.encrypt.url(),
     },
     {
         key: 'decrypt' as const,
-        label: 'Decrypt',
+        label: 'Descifrar',
         icon: 'no_encryption',
         url: ciphersRoutes.decrypt.url(),
     },
     {
         key: 'break' as const,
-        label: 'Break',
+        label: 'Romper',
         icon: 'query_stats',
         url: ciphersRoutes.break.url(),
     },
@@ -72,10 +72,10 @@ export default function EnigmaShell({
                         </div>
                         <div className="min-w-0">
                             <div className="truncate font-code text-xs font-semibold text-on-surface">
-                                {user?.name ?? 'OPERATOR_01'}
+                                {user?.name ?? 'OPERADOR_01'}
                             </div>
                             <div className="font-code text-[10px] text-on-surface-variant">
-                                Level 3 Access
+                                Nivel de acceso 3
                             </div>
                         </div>
                     </div>
@@ -89,13 +89,13 @@ export default function EnigmaShell({
                         <span className="material-symbols-outlined text-base">
                             add
                         </span>
-                        New Session
+                        Nueva sesión
                     </Link>
                 </div>
 
                 <nav className="mt-8 flex-1 space-y-1 px-3">
                     <div className="mb-2 px-3 font-code text-[10px] tracking-[0.2em] text-on-surface-variant/50 uppercase">
-                        Modules
+                        Módulos
                     </div>
                     {navigation.map((item) => (
                         <Link
@@ -117,7 +117,7 @@ export default function EnigmaShell({
                         <span className="material-symbols-outlined text-[19px]">
                             list_alt
                         </span>
-                        Logs
+                        Registros
                     </Link>
                 </nav>
 
@@ -129,7 +129,7 @@ export default function EnigmaShell({
                         <span className="material-symbols-outlined text-lg">
                             menu_book
                         </span>
-                        Documentation
+                        Documentación
                     </Link>
                     <Link
                         className="flex items-center gap-3 px-3 py-2 font-code text-xs text-on-surface-variant transition-colors hover:text-tertiary"
@@ -138,7 +138,7 @@ export default function EnigmaShell({
                         <span className="material-symbols-outlined text-lg">
                             settings_ethernet
                         </span>
-                        System Status
+                        Estado del sistema
                     </Link>
                     <Link
                         as="button"
@@ -149,7 +149,7 @@ export default function EnigmaShell({
                         <span className="material-symbols-outlined text-lg">
                             logout
                         </span>
-                        Disconnect
+                        Desconectar
                     </Link>
                 </div>
             </aside>
@@ -202,7 +202,7 @@ export default function EnigmaShell({
                     <span className="material-symbols-outlined text-lg">
                         list_alt
                     </span>
-                    Logs
+                    Registros
                 </Link>
             </nav>
         </div>

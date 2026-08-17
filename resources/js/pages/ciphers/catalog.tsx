@@ -22,32 +22,32 @@ const icons: Record<string, string> = {
 
 function methodType(cipher: CipherMetadata): string {
     if (['rail-fence', 'columnar'].includes(cipher.id)) {
-        return 'Transposition';
+        return 'Transposición';
     }
 
     if (['vigenere', 'beaufort', 'autokey'].includes(cipher.id)) {
-        return 'Polyalphabetic';
+        return 'Polialfabético';
     }
 
-    return 'Substitution';
+    return 'Sustitución';
 }
 
 export default function Catalog({ ciphers }: CatalogProps) {
     return (
-        <EnigmaShell active="catalog" title="Methods Catalog">
-            <Head title="Methods Catalog" />
+        <EnigmaShell active="catalog" title="Catálogo de métodos">
+            <Head title="Catálogo de métodos" />
             <header className="mb-10 border-b border-outline-variant/30 pb-8">
                 <div className="border-l-2 border-tertiary pl-4">
                     <div className="mb-2 font-code text-[10px] tracking-[0.2em] text-tertiary uppercase">
-                        ENIGMA / METHOD REGISTRY
+                        ENIGMA / REGISTRO DE MÉTODOS
                     </div>
                     <h1 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl">
-                        Methods Catalog
+                        Catálogo de métodos
                     </h1>
                     <p className="mt-3 max-w-3xl font-code text-sm leading-relaxed text-on-surface-variant">
-                        Select a cryptographic algorithm for the current
-                        session. Every method is historical, inspectable and
-                        intended for laboratory learning only.
+                        Selecciona un algoritmo criptográfico para la sesión
+                        actual. Cada método es histórico, inspeccionable y está
+                        pensado solo para el aprendizaje en laboratorio.
                     </p>
                 </div>
             </header>
@@ -75,17 +75,17 @@ export default function Catalog({ ciphers }: CatalogProps) {
                             </p>
                             <dl className="border border-outline-variant/30 bg-[#1a1919] p-3 font-code text-[11px] text-secondary">
                                 <div className="flex justify-between border-b border-outline-variant/30 pb-2">
-                                    <dt>TYPE</dt>
+                                    <dt>TIPO</dt>
                                     <dd>{methodType(cipher)}</dd>
                                 </div>
                                 <div className="flex justify-between border-b border-outline-variant/30 py-2">
-                                    <dt>PARAMETERS</dt>
+                                    <dt>PARÁMETROS</dt>
                                     <dd>
-                                        {cipher.parameters.length || 'NONE'}
+                                        {cipher.parameters.length || 'NINGUNO'}
                                     </dd>
                                 </div>
                                 <div className="flex justify-between pt-2">
-                                    <dt>FORMULA</dt>
+                                    <dt>FÓRMULA</dt>
                                     <dd className="max-w-[55%] truncate text-right">
                                         {cipher.formula}
                                     </dd>
@@ -95,7 +95,7 @@ export default function Catalog({ ciphers }: CatalogProps) {
                                 className="mt-auto flex w-full items-center justify-center gap-2 border border-outline px-4 py-3 font-code text-xs font-semibold tracking-widest text-on-surface uppercase transition-colors hover:border-tertiary hover:bg-surface-container-high"
                                 href={ciphersRoutes.encrypt()}
                             >
-                                Select Method
+                                Seleccionar método
                                 <span className="material-symbols-outlined text-base">
                                     arrow_forward
                                 </span>

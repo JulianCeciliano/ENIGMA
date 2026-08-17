@@ -5,7 +5,7 @@ import { register } from '@/routes';
 export default function TerminalAccess() {
     return (
         <>
-            <Head title="Terminal Access" />
+            <Head title="Acceso a la terminal" />
             <main className="grid-blueprint flex min-h-screen items-center justify-center bg-background px-4 py-12 text-on-surface">
                 <div className="w-full max-w-md">
                     <header className="mb-8 text-center">
@@ -14,7 +14,7 @@ export default function TerminalAccess() {
                         </div>
                         <div className="flex items-center justify-center gap-2 font-code text-xs tracking-widest text-on-surface-variant uppercase">
                             <span className="h-2 w-2 bg-tertiary" />
-                            Terminal Access
+                            Acceso a la terminal
                             <span className="h-2 w-2 bg-tertiary" />
                         </div>
                     </header>
@@ -30,17 +30,18 @@ export default function TerminalAccess() {
                                 <div className="space-y-5">
                                     <div className="border-b border-outline-variant/30 pb-4">
                                         <div className="font-code text-[10px] tracking-[0.2em] text-tertiary uppercase">
-                                            Secure operator session
+                                            Sesión segura de operador
                                         </div>
                                         <p className="mt-2 font-code text-xs leading-relaxed text-on-surface-variant">
-                                            Authenticate to access the cipher
-                                            laboratory and operation history.
+                                            Autentícate para acceder al
+                                            laboratorio de cifrado y al
+                                            historial de operaciones.
                                         </p>
                                     </div>
 
                                     <label className="block space-y-2">
                                         <span className="font-code text-[11px] tracking-widest text-on-surface-variant uppercase">
-                                            Operator ID / Email
+                                            ID del operador / Correo
                                         </span>
                                         <div className="flex items-center border border-outline-variant/40 bg-[#1a1919] focus-within:border-tertiary">
                                             <span className="material-symbols-outlined pl-3 text-on-surface-variant">
@@ -63,7 +64,7 @@ export default function TerminalAccess() {
 
                                     <label className="block space-y-2">
                                         <span className="font-code text-[11px] tracking-widest text-on-surface-variant uppercase">
-                                            Access Token / Password
+                                            Token de acceso / Contraseña
                                         </span>
                                         <div className="flex items-center border border-outline-variant/40 bg-[#1a1919] focus-within:border-tertiary">
                                             <span className="material-symbols-outlined pl-3 text-on-surface-variant">
@@ -91,7 +92,7 @@ export default function TerminalAccess() {
                                             type="checkbox"
                                             value="1"
                                         />
-                                        Keep terminal session active
+                                        Mantener activa la sesión de la terminal
                                     </label>
 
                                     <button
@@ -103,14 +104,14 @@ export default function TerminalAccess() {
                                             login
                                         </span>
                                         {processing
-                                            ? 'Authenticating...'
-                                            : 'Access Terminal'}
+                                            ? 'Autenticando...'
+                                            : 'Acceder a la terminal'}
                                     </button>
 
                                     <div className="flex items-center gap-4 pt-2">
                                         <span className="h-px flex-1 bg-outline-variant/30" />
                                         <span className="font-code text-[10px] tracking-widest text-on-surface-variant uppercase">
-                                            New operator
+                                            Nuevo operador
                                         </span>
                                         <span className="h-px flex-1 bg-outline-variant/30" />
                                     </div>
@@ -122,7 +123,7 @@ export default function TerminalAccess() {
                                         <span className="material-symbols-outlined text-base">
                                             how_to_reg
                                         </span>
-                                        Request Access
+                                        Solicitar acceso
                                     </Link>
                                 </div>
                             )}
@@ -133,7 +134,7 @@ export default function TerminalAccess() {
                         <span className="material-symbols-outlined text-sm">
                             lock
                         </span>
-                        Session protected by Laravel Passport
+                        Sesión protegida por Laravel Passport
                     </div>
                 </div>
             </main>

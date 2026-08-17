@@ -15,6 +15,17 @@ type HistoryFilters = {
     search: string;
 };
 
+const operationLabels: Record<string, string> = {
+    ENCRYPT: 'CIFRAR',
+    DECRYPT: 'DESCIFRAR',
+    BREAK: 'ROMPER',
+};
+
+const statusLabels: Record<string, string> = {
+    SUCCESS: 'ÉXITO',
+    FAILED: 'FALLIDO',
+};
+
 export default function History({
     operations: initialOperations,
 }: HistoryProps) {
@@ -73,18 +84,19 @@ export default function History({
     }
 
     return (
-        <EnigmaShell active="history" title="System Logs">
-            <Head title="Operation History" />
+        <EnigmaShell active="history" title="Registros del sistema">
+            <Head title="Historial de operaciones" />
             <header className="mb-8 flex flex-col gap-5 border-b border-outline-variant/30 pb-8 md:flex-row md:items-end md:justify-between">
                 <div>
                     <div className="mb-2 font-code text-[10px] tracking-[0.2em] text-tertiary uppercase">
-                        ENIGMA / PERSISTED OPERATIONS
+                        ENIGMA / OPERACIONES PERSISTIDAS
                     </div>
                     <h1 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl">
-                        System Logs
+                        Registros del sistema
                     </h1>
                     <p className="mt-3 font-code text-sm text-on-surface-variant">
-                        Chronological record of recent cryptographic operations.
+                        Registro cronológico de las operaciones criptográficas
+                        recientes.
                     </p>
                 </div>
                 <div className="flex gap-3">
@@ -96,7 +108,7 @@ export default function History({
                         <span className="material-symbols-outlined text-base">
                             download
                         </span>
-                        Export
+                        Exportar
                     </button>
                     <button
                         className="flex items-center gap-2 border border-error/30 bg-[#1a1919] px-4 py-2 font-code text-xs tracking-wider text-error uppercase transition-colors hover:bg-error hover:text-primary-container"
@@ -106,7 +118,7 @@ export default function History({
                         <span className="material-symbols-outlined text-base">
                             delete
                         </span>
-                        Clear Logs
+                        Vaciar registros
                     </button>
                 </div>
             </header>
@@ -117,7 +129,7 @@ export default function History({
             >
                 <label className="flex flex-1 flex-col gap-2">
                     <span className="font-code text-[10px] tracking-widest text-on-surface-variant uppercase">
-                        Operation Type
+                        Tipo de operación
                     </span>
                     <select
                         className="border border-outline-variant/30 bg-[#1a1919] p-2 font-code text-xs text-on-surface outline-none focus:border-tertiary"
@@ -126,15 +138,15 @@ export default function History({
                         }
                         value={filters.operation}
                     >
-                        <option value="all">ALL OPERATIONS</option>
-                        <option value="encrypt">ENCRYPT</option>
-                        <option value="decrypt">DECRYPT</option>
-                        <option value="break">BREAK</option>
+                        <option value="all">TODAS LAS OPERACIONES</option>
+                        <option value="encrypt">CIFRAR</option>
+                        <option value="decrypt">DESCIFRAR</option>
+                        <option value="break">ROMPER</option>
                     </select>
                 </label>
                 <label className="flex flex-1 flex-col gap-2">
                     <span className="font-code text-[10px] tracking-widest text-on-surface-variant uppercase">
-                        Date Range
+                        Rango de fechas
                     </span>
                     <select
                         className="border border-outline-variant/30 bg-[#1a1919] p-2 font-code text-xs text-on-surface outline-none focus:border-tertiary"
@@ -143,22 +155,22 @@ export default function History({
                         }
                         value={filters.dateRange}
                     >
-                        <option value="all">ALL TIME</option>
-                        <option value="24h">LAST 24 HOURS</option>
-                        <option value="7d">LAST 7 DAYS</option>
-                        <option value="30d">LAST 30 DAYS</option>
+                        <option value="all">TODO EL PERIODO</option>
+                        <option value="24h">ÚLTIMAS 24 HORAS</option>
+                        <option value="7d">ÚLTIMOS 7 DÍAS</option>
+                        <option value="30d">ÚLTIMOS 30 DÍAS</option>
                     </select>
                 </label>
                 <label className="flex flex-1 flex-col gap-2">
                     <span className="font-code text-[10px] tracking-widest text-on-surface-variant uppercase">
-                        Search Hash
+                        Buscar hash
                     </span>
                     <input
                         className="border border-outline-variant/30 bg-[#1a1919] p-2 font-code text-xs text-on-surface outline-none placeholder:text-on-surface-variant/50 focus:border-tertiary"
                         onChange={(event) =>
                             updateFilter('search', event.target.value)
                         }
-                        placeholder="sha256 prefix..."
+                        placeholder="prefijo sha256..."
                         value={filters.search}
                     />
                 </label>
@@ -166,7 +178,7 @@ export default function History({
                     className="bg-tertiary px-5 py-2 font-code text-xs font-bold tracking-wider text-primary-container uppercase hover:bg-[#a99985]"
                     type="submit"
                 >
-                    Apply
+                    Aplicar
                 </button>
             </form>
 
@@ -175,12 +187,12 @@ export default function History({
                     <thead className="border-b border-outline-variant/30 bg-surface-container-high">
                         <tr>
                             {[
-                                'TIMESTAMP [UTC]',
-                                'OP_TYPE',
-                                'ALGORITHM',
-                                'STATUS',
-                                'PAYLOAD_PREVIEW',
-                                'DURATION',
+                                'FECHA [UTC]',
+                                'OPERACIÓN',
+                                'ALGORITMO',
+                                'ESTADO',
+                                'VISTA DEL PAYLOAD',
+                                'DURACIÓN',
                             ].map((heading) => (
                                 <th
                                     className="px-4 py-3 font-code text-[10px] font-medium tracking-wider text-on-surface-variant uppercase"
@@ -206,7 +218,8 @@ export default function History({
                                         : '--'}
                                 </td>
                                 <td className="px-4 py-4 text-secondary">
-                                    {operation.operation}
+                                    {operationLabels[operation.operation] ??
+                                        operation.operation}
                                 </td>
                                 <td className="px-4 py-4 text-on-surface">
                                     {operation.algorithm}
@@ -215,7 +228,8 @@ export default function History({
                                     className={`px-4 py-4 ${operation.status === 'SUCCESS' ? 'text-tertiary' : 'text-error'}`}
                                 >
                                     <span className="mr-2 inline-block h-2 w-2 bg-current" />
-                                    {operation.status}
+                                    {statusLabels[operation.status] ??
+                                        operation.status}
                                 </td>
                                 <td className="max-w-[260px] truncate px-4 py-4 text-on-surface-variant">
                                     {operation.payloadPreview ||
@@ -233,7 +247,7 @@ export default function History({
                                     className="px-4 py-16 text-center font-code text-xs tracking-widest text-outline uppercase"
                                     colSpan={6}
                                 >
-                                    No operation records
+                                    Sin registros de operaciones
                                 </td>
                             </tr>
                         )}
@@ -243,8 +257,8 @@ export default function History({
 
             <div className="mt-4 flex flex-col gap-3 border-t border-outline-variant/30 pt-4 font-code text-xs text-on-surface-variant sm:flex-row sm:items-center sm:justify-between">
                 <span>
-                    Showing {operations.from ?? 0}-{operations.to ?? 0} of{' '}
-                    {operations.total} entries
+                    Mostrando {operations.from ?? 0}-{operations.to ?? 0} de{' '}
+                    {operations.total} registros
                 </span>
                 <div className="flex gap-2">
                     <button
@@ -262,7 +276,7 @@ export default function History({
                         }}
                         type="button"
                     >
-                        &lt; PREV
+                        &lt; ANTERIOR
                     </button>
                     <button
                         className="border border-outline-variant/30 px-3 py-2 hover:border-tertiary hover:text-tertiary disabled:opacity-30"
@@ -281,7 +295,7 @@ export default function History({
                         }}
                         type="button"
                     >
-                        NEXT &gt;
+                        SIGUIENTE &gt;
                     </button>
                 </div>
             </div>

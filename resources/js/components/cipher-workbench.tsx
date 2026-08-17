@@ -131,11 +131,11 @@ export default function CipherWorkbench({
                                 input
                             </span>
                             {mode === 'encrypt'
-                                ? 'Plaintext Input'
-                                : 'Ciphertext Input'}
+                                ? 'Entrada de texto plano'
+                                : 'Entrada de texto cifrado'}
                         </h2>
                         <span className="font-code text-[10px] text-on-surface-variant">
-                            CHAR_COUNT: {form.text.length}
+                            CARACTERES: {form.text.length}
                         </span>
                     </div>
                     <textarea
@@ -143,8 +143,8 @@ export default function CipherWorkbench({
                         onChange={(event) => updateText(event.target.value)}
                         placeholder={
                             mode === 'encrypt'
-                                ? 'Enter plaintext sequence for encryption...'
-                                : 'Paste ciphertext for recovery...'
+                                ? 'Introduce el texto plano para cifrar...'
+                                : 'Pega el texto cifrado para recuperar...'
                         }
                         value={form.text}
                     />
@@ -154,7 +154,7 @@ export default function CipherWorkbench({
                     <div className="grid gap-6 md:grid-cols-2">
                         <label className="flex flex-col gap-2">
                             <span className="font-code text-[11px] tracking-widest text-on-surface-variant uppercase">
-                                Algorithm
+                                Algoritmo
                             </span>
                             <select
                                 className="border border-outline-variant/30 bg-[#1a1919] px-4 py-3 font-code text-sm text-on-surface outline-none focus:border-tertiary"
@@ -189,7 +189,7 @@ export default function CipherWorkbench({
                                     }}
                                     type="checkbox"
                                 />
-                                Include educational steps
+                                Incluir pasos educativos
                             </label>
                         </div>
                     </div>
@@ -238,10 +238,10 @@ export default function CipherWorkbench({
                                     : 'lock_open'}
                             </span>
                             {request.processing
-                                ? 'Processing...'
+                                ? 'Procesando...'
                                 : mode === 'encrypt'
-                                  ? 'Execute Cipher'
-                                  : 'Execute Decrypt'}
+                                  ? 'Ejecutar cifrado'
+                                  : 'Ejecutar descifrado'}
                         </button>
                     </div>
                 </section>
@@ -253,15 +253,15 @@ export default function CipherWorkbench({
                                 output
                             </span>
                             {mode === 'encrypt'
-                                ? 'Ciphertext Output'
-                                : 'Recovered Payload'}
+                                ? 'Salida de texto cifrado'
+                                : 'Texto recuperado'}
                         </h2>
                         <div className="flex gap-3">
                             <button
                                 className="text-on-surface-variant transition-colors hover:text-tertiary disabled:opacity-30"
                                 disabled={!result}
                                 onClick={copyResult}
-                                title="Copy"
+                                title="Copiar"
                                 type="button"
                             >
                                 <span className="material-symbols-outlined text-lg">
@@ -272,7 +272,7 @@ export default function CipherWorkbench({
                                 className="text-on-surface-variant transition-colors hover:text-tertiary disabled:opacity-30"
                                 disabled={!result}
                                 onClick={downloadResult}
-                                title="Download"
+                                title="Descargar"
                                 type="button"
                             >
                                 <span className="material-symbols-outlined text-lg">
@@ -285,7 +285,7 @@ export default function CipherWorkbench({
                         className="min-h-[200px] flex-1 resize-none border-0 bg-[#1a1919] p-6 font-code text-sm text-tertiary outline-none"
                         readOnly
                         value={result?.result ?? ''}
-                        placeholder="Waiting for execution..."
+                        placeholder="Esperando ejecución..."
                     />
                 </section>
             </div>
@@ -297,7 +297,7 @@ export default function CipherWorkbench({
                             <span className="material-symbols-outlined text-base text-secondary">
                                 science
                             </span>
-                            Operational Logic
+                            Lógica operativa
                         </h2>
                     </div>
                     <div className="flex flex-col gap-6 p-6">
@@ -320,19 +320,19 @@ export default function CipherWorkbench({
 
                         <div>
                             <h3 className="mb-4 border-b border-outline-variant/30 pb-2 font-code text-[11px] tracking-widest uppercase">
-                                Algorithm Sequence
+                                Secuencia del algoritmo
                             </h3>
                             <ol className="space-y-4 border-l border-outline-variant/30 pl-5">
                                 <li className="relative font-code text-xs text-on-surface-variant before:absolute before:top-0.5 before:-left-[25px] before:h-3 before:w-3 before:border before:border-tertiary before:bg-[#1a1919]">
-                                    Select a documented classical method.
+                                    Selecciona un método clásico documentado.
                                 </li>
                                 <li className="relative font-code text-xs text-on-surface-variant before:absolute before:top-0.5 before:-left-[25px] before:h-3 before:w-3 before:border before:border-outline-variant before:bg-[#1a1919]">
-                                    Apply ASCII letter rules and preserve
-                                    formatting.
+                                    Aplica las reglas de letras ASCII y conserva
+                                    el formato.
                                 </li>
                                 <li className="relative font-code text-xs text-on-surface-variant before:absolute before:top-0.5 before:-left-[25px] before:h-3 before:w-3 before:border before:border-outline-variant before:bg-[#1a1919]">
-                                    Return result, key metadata and optional
-                                    steps.
+                                    Devuelve el resultado, metadatos de la clave
+                                    y pasos opcionales.
                                 </li>
                             </ol>
                         </div>
@@ -344,7 +344,7 @@ export default function CipherWorkbench({
                                 </span>
                                 <div>
                                     <div className="font-code text-[10px] tracking-widest text-error uppercase">
-                                        Educational Warning
+                                        Advertencia educativa
                                     </div>
                                     <p className="mt-1 font-code text-[11px] leading-relaxed text-on-surface-variant">
                                         Estos cifrados históricos no deben
@@ -359,7 +359,8 @@ export default function CipherWorkbench({
 
                 {(request.hasErrors || requestError) && (
                     <div className="border border-error/40 bg-error-container/20 p-4 font-code text-xs text-error">
-                        {requestError ?? Object.values(request.errors).flat().join(' ')}
+                        {requestError ??
+                            Object.values(request.errors).flat().join(' ')}
                     </div>
                 )}
             </aside>

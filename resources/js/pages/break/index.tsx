@@ -33,24 +33,25 @@ export default function Break({ ciphers }: BreakProps) {
     }
 
     return (
-        <EnigmaShell active="break" title="Cryptanalysis Matrix">
-            <Head title="Break / Cryptanalysis" />
+        <EnigmaShell active="break" title="Matriz de criptoanálisis">
+            <Head title="Romper / Criptoanálisis" />
             <header className="mb-10 flex flex-col gap-4 border-b border-outline-variant/30 pb-8 md:flex-row md:items-end md:justify-between">
                 <div>
                     <div className="mb-2 font-code text-[10px] tracking-[0.2em] text-tertiary uppercase">
-                        ENIGMA / ATTACK SURFACE
+                        ENIGMA / SUPERFICIE DE ATAQUE
                     </div>
                     <h1 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl">
-                        Cryptanalysis Matrix
+                        Matriz de criptoanálisis
                     </h1>
                     <p className="mt-3 max-w-3xl font-code text-sm leading-relaxed text-on-surface-variant">
-                        Deploy the documented break routine against an unknown
-                        ciphertext. Results are estimates, not certainty scores.
+                        Despliega la rutina de ruptura documentada contra un
+                        texto cifrado desconocido. Los resultados son
+                        estimaciones, no puntuaciones de certeza.
                     </p>
                 </div>
                 <span className="hidden items-center gap-2 border border-outline-variant/30 bg-surface-container-high px-3 py-2 font-code text-[10px] tracking-wider text-primary uppercase md:flex">
                     <span className="h-2 w-2 bg-tertiary" />
-                    SYS_READY
+                    SISTEMA_LISTO
                 </span>
             </header>
 
@@ -65,7 +66,7 @@ export default function Break({ ciphers }: BreakProps) {
                                 <span className="material-symbols-outlined mr-2 text-base">
                                     code_blocks
                                 </span>
-                                Target Ciphertext
+                                Texto cifrado objetivo
                             </div>
                             <span className="material-symbols-outlined text-on-surface-variant">
                                 file_upload
@@ -78,18 +79,18 @@ export default function Break({ ciphers }: BreakProps) {
                                     setText(event.target.value);
                                     request.setData('text', event.target.value);
                                 }}
-                                placeholder="> Input raw ciphertext for analysis..."
+                                placeholder="> Introduce el texto cifrado para analizar..."
                                 value={text}
                             />
                             <div className="mt-4 flex justify-between font-code text-[10px] tracking-wider text-on-surface-variant uppercase">
                                 <span>
-                                    Length:{' '}
+                                    Longitud:{' '}
                                     <strong className="text-on-surface">
-                                        {text.length} chars
+                                        {text.length} caracteres
                                     </strong>
                                 </span>
                                 <span>
-                                    Format:{' '}
+                                    Formato:{' '}
                                     <strong className="text-on-surface">
                                         ASCII / UTF-8
                                     </strong>
@@ -103,12 +104,12 @@ export default function Break({ ciphers }: BreakProps) {
                             <span className="material-symbols-outlined mr-2 align-middle text-base">
                                 tune
                             </span>
-                            Attack Vector Config
+                            Configuración del vector de ataque
                         </div>
                         <div className="space-y-5 p-6">
                             <label className="block">
                                 <span className="mb-2 block font-code text-[11px] tracking-widest text-on-surface-variant uppercase">
-                                    Methodology
+                                    Metodología
                                 </span>
                                 <select
                                     className="w-full border border-tertiary bg-surface-container-highest px-3 py-3 font-code text-xs text-tertiary outline-none"
@@ -130,7 +131,7 @@ export default function Break({ ciphers }: BreakProps) {
                             </label>
                             <div className="border-t border-outline-variant/30 pt-5">
                                 <div className="font-code text-[10px] tracking-widest text-on-surface-variant uppercase">
-                                    Active model
+                                    Modelo activo
                                 </div>
                                 <div className="mt-2 font-code text-sm text-tertiary">
                                     {selectedCipher?.name}
@@ -148,8 +149,8 @@ export default function Break({ ciphers }: BreakProps) {
                                     play_arrow
                                 </span>
                                 {request.processing
-                                    ? 'Analyzing...'
-                                    : 'Initialize Sequence'}
+                                    ? 'Analizando...'
+                                    : 'Iniciar secuencia'}
                             </button>
                         </div>
                     </section>
@@ -159,23 +160,23 @@ export default function Break({ ciphers }: BreakProps) {
                     <section className="grid grid-cols-3 gap-3">
                         {[
                             [
-                                'STATUS',
+                                'ESTADO',
                                 request.processing
-                                    ? 'RUNNING'
+                                    ? 'EJECUTANDO'
                                     : result
-                                      ? 'COMPLETE'
-                                      : 'IDLE',
+                                      ? 'COMPLETADO'
+                                      : 'EN ESPERA',
                                 request.processing
                                     ? 'text-tertiary'
                                     : 'text-secondary',
                             ],
                             [
-                                'COMPUTATIONS',
-                                result ? 'SEARCHED' : '0 / s',
+                                'CÁLCULOS',
+                                result ? 'EXPLORADO' : '0 / s',
                                 'text-on-surface',
                             ],
                             [
-                                'LANGUAGE',
+                                'IDIOMA',
                                 result?.idioma ?? '--',
                                 'text-on-surface',
                             ],
@@ -200,7 +201,7 @@ export default function Break({ ciphers }: BreakProps) {
                             <span className="material-symbols-outlined mr-2 text-base">
                                 monitoring
                             </span>
-                            Frequency Distribution
+                            Distribución de frecuencias
                         </div>
                         <div className="flex h-[calc(100%-53px)] items-end gap-1 bg-[#1a1919] p-5 opacity-80">
                             {bars.map((height, index) => (
@@ -214,7 +215,7 @@ export default function Break({ ciphers }: BreakProps) {
                         {!result && (
                             <div className="absolute inset-x-0 top-14 bottom-0 flex items-center justify-center">
                                 <span className="border border-outline-variant/30 bg-surface-container-low px-4 py-2 font-code text-xs tracking-widest text-outline uppercase">
-                                    Awaiting Data
+                                    Esperando datos
                                 </span>
                             </div>
                         )}
@@ -226,10 +227,10 @@ export default function Break({ ciphers }: BreakProps) {
                                 <span className="material-symbols-outlined mr-2 align-middle text-base">
                                     view_list
                                 </span>
-                                Candidate Output
+                                Salida de candidato
                             </div>
                             <span className="font-code text-[10px] text-on-surface-variant uppercase">
-                                Best match
+                                Mejor coincidencia
                             </span>
                         </div>
                         <div className="bg-[#1a1919] p-5">
@@ -238,7 +239,7 @@ export default function Break({ ciphers }: BreakProps) {
                                     <div className="grid gap-3 sm:grid-cols-3">
                                         <div>
                                             <div className="font-code text-[10px] text-on-surface-variant uppercase">
-                                                Recovered key
+                                                Clave recuperada
                                             </div>
                                             <div className="mt-1 font-code text-sm text-tertiary">
                                                 {result.recoveredKey || '--'}
@@ -246,7 +247,7 @@ export default function Break({ ciphers }: BreakProps) {
                                         </div>
                                         <div>
                                             <div className="font-code text-[10px] text-on-surface-variant uppercase">
-                                                Score
+                                                Puntuación
                                             </div>
                                             <div className="mt-1 font-code text-sm text-primary">
                                                 {result.score.toFixed(3)}
@@ -267,7 +268,7 @@ export default function Break({ ciphers }: BreakProps) {
                                 </div>
                             ) : (
                                 <div className="grid min-h-32 place-items-center font-code text-xs tracking-widest text-outline uppercase">
-                                    No candidates yet
+                                    Aún no hay candidatos
                                 </div>
                             )}
                         </div>
